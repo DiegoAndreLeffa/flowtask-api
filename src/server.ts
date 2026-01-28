@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import express from 'express';
 import { AppDataSource } from './database';
 import { routes } from './routes';
-import { errorMiddleware } from './shared/middlewares/error.middleware';
+import { errorHandler } from './shared/errors/error-handler';
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(routes);
 
 
-app.use(errorMiddleware);
+app.use(errorHandler);
 
 AppDataSource.initialize()
   .then(() => {
