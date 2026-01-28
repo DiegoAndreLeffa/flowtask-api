@@ -1,18 +1,27 @@
-import { TaskRule } from './task-rule.interface';
 import { Task, TaskPriority } from '../entities/task.entity';
 
-export class PriorityRule implements TaskRule {
+export class PriorityRule {
   async apply(task: Task): Promise<void> {
-    const now = new Date();
-    const dueDateTime = new Date(`${task.dueDate}T${task.dueTime}`);
+    if (!task.dueDate) {
+      task.priority = TaskPriority.LOW;
+      return;
+    }
 
-    const diffInHours =
-      (dueDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+    const now = new Date().getTime();
+    const due = task.dueDate.getTime();
+
+    const diffInHours = (due - now) / (1000 * 60 * 60);
 
     if (diffInHours <= 24) {
       task.priority = TaskPriority.CRITICAL;
-    } else if (diffInHours <= 72) {
-      task.priority = TaskPriority.HIGH;
+      return;
     }
+
+    if (diffInHours <= 72) {
+      task.priority = TaskPriority.HIGH;
+      return;
+    }
+
+    task.priority = TaskPriority.LOW;
   }
 }
