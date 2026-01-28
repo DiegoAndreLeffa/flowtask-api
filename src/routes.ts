@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import { taskRoutes } from './modules/tasks/routes/task.routes';
 
 const routes = Router();
 
-routes.get('/health', (_, res) => {
-  return res.json({ status: 'FlowTask API running' });
-});
+routes.use('/tasks', taskRoutes);
 
 export { routes };
