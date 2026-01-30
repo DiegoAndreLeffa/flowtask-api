@@ -8,27 +8,27 @@ interface TokenPayload {
 
 export function ensureAuthenticated(
   req: Request,
-  _: Response,
+  res: Response,
   next: NextFunction
 ) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    throw new AppError('JWT token missing', 401);
+    throw new AppError('Token missing', 401);
   }
 
   const [, token] = authHeader.split(' ');
 
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || 'flowtask-secret'
-    ) as TokenPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { sub: string };
 
-    req.user = { id: decoded.sub };
+    req.user = {
+      id: decoded.sub,
+    };
 
     return next();
   } catch {
-    throw new AppError('Invalid JWT token', 401);
+    throw new AppError('Invalid token', 401);
   }
 }
+

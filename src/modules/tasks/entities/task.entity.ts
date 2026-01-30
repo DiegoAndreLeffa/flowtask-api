@@ -40,11 +40,8 @@ export class Task {
   })
   priority: TaskPriority;
 
-  @Column({ type: 'date' })
-  dueDate: Date;
-
-  @Column({ type: 'time' })
-  dueTime: string;
+  @Column({ type: 'timestamp' })
+  dueDate: string;
 
   @Column({
     type: 'enum',
@@ -52,6 +49,9 @@ export class Task {
     default: TaskStatus.PENDING,
   })
   status: TaskStatus;
+
+  @Column()
+  userId: string;
 
   @CreateDateColumn()
   createdAt: Date;

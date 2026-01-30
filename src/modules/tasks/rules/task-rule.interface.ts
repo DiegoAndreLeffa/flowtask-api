@@ -1,5 +1,5 @@
 import { Task } from '../entities/task.entity';
 
-export interface TaskRule {
-  apply(task: Task, context?: any): Promise<void>;
+export interface ITaskRule {
+  execute(task: Task, userId: string): Promise<void>;
 }

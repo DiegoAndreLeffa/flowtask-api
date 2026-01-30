@@ -9,11 +9,19 @@ export class UserRepository {
     this.ormRepository = AppDataSource.getRepository(User);
   }
 
-  create(user: User): Promise<User> {
+  create(data: Partial<User>): User {
+    return this.ormRepository.create(data);
+  }
+
+  save(user: User): Promise<User> {
     return this.ormRepository.save(user);
   }
 
   findByEmail(email: string): Promise<User | null> {
     return this.ormRepository.findOne({ where: { email } });
+  }
+
+  findById(id: string): Promise<User | null> {
+    return this.ormRepository.findOne({ where: { id } });
   }
 }
