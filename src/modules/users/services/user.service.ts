@@ -6,20 +6,23 @@ import { AppError } from '../../../shared/errors/AppError';
 import { CreateUserDTO } from '../dtos/create-user.dto';
 
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  private userRepository = new UserRepository();
 
-  async register(data: CreateUserDTO): Promise<User> {
-    const existingUser = await this.userRepository.findByEmail(data.email);
+  async create({ name, email, password }: CreateUserDTO): Promise<User> {
+    const userExists = await this.userRepository.findByEmail(email);
 
-    if (existingUser) {
-      throw new AppError('Email already in use', 409);
+    if (userExists) {
+      throw new AppError('User already exists', 409);
     }
 
-    const user = new User();
-    user.name = data.name;
-    user.email = data.email;
-    user.password = await bcrypt.hash(data.password, 8);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    return this.userRepository.create(user);
+    const user = this.userRepository.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return this.userRepository.save(user);
   }
 }
