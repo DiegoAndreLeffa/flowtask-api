@@ -1,14 +1,28 @@
 import bcrypt from 'bcrypt';
-
 import { User } from '../entities/user.entity';
 import { UserRepository } from '../repositories/user.repository';
 import { AppError } from '../../../shared/errors/AppError';
-import { CreateUserDTO } from '../dtos/create-user.dto';
+import { CreateUserInput, createUserSchema } from '../../../shared/validators/user.schema';
+
+
 
 export class UserService {
   private userRepository = new UserRepository();
 
-  async create({ name, email, password }: CreateUserDTO): Promise<User> {
+  async create(data: CreateUserInput): Promise<User> {
+    
+    const validationResult = createUserSchema.safeParse(data);
+
+    if (!validationResult.success) {
+      const errorMessages = validationResult.error.issues
+        .map((err) => err.message)
+        .join('; ');
+      
+      throw new AppError(errorMessages, 400);
+    }
+
+    const { name, email, password } = validationResult.data;
+
     const userExists = await this.userRepository.findByEmail(email);
 
     if (userExists) {
