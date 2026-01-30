@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-	"test": "jest"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,8 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.17.2",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.28"
+    "typeorm": "^0.3.28",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
