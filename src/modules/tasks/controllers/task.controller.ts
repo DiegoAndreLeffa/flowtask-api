@@ -31,6 +31,7 @@ export class TaskController {
       category,
       priority,
       dueDate,
+      dueTime,
     });
 
     return res.status(201).json(task);

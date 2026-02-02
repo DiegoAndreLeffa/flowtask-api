@@ -30,8 +30,8 @@ export class Task {
   @Column({ nullable: true })
   description?: string;
 
-  @Column()
-  category: string;
+  @Column({ nullable: true })
+  category?: string;
 
   @Column({
     type: 'enum',
@@ -40,8 +40,11 @@ export class Task {
   })
   priority: TaskPriority;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date' })
   dueDate: string;
+
+  @Column({ type: 'time', nullable: true })
+  dueTime: string; 
 
   @Column({
     type: 'enum',
